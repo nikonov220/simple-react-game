@@ -45,13 +45,15 @@ const Profile = ({ setProfileData, socket }) => {
       setAvatar(savedData.avatar);
       setNickname(savedData.nickname);
     } else {
-      setAvatar(generateEmoji()); // Set initial random emoji
+      const emoji = generateEmoji();
+      setAvatar(emoji); // Set initial random emoji
     }
   }, []);
 
   // Handle nickname change
   const handleNicknameChange = (event) => {
-    setNickname(event.target.value);
+    const { value } = event.target;
+    setNickname(value);
   };
 
   const saveProfile = () => {
@@ -64,9 +66,10 @@ const Profile = ({ setProfileData, socket }) => {
     const data = localStorage.getItem("profileData");
     if (data) {
       const savedData = JSON.parse(data);
+      // ?
       profileData["id"] = savedData["id"];
     }
-    setProfileData({ avatar: avatar, nickname: nickname });
+    setProfileData({ avatar, nickname });
     socket.emit("connectionHandshake", profileData);
 
     localStorage.setItem("profileData", JSON.stringify(profileData));
@@ -74,7 +77,8 @@ const Profile = ({ setProfileData, socket }) => {
 
   // Handle regenerate avatar
   const regenerateAvatar = () => {
-    setAvatar(generateEmoji());
+    const emoji = generateEmoji();
+    setAvatar(emoji);
   };
 
   return (

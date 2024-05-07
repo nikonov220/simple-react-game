@@ -12,21 +12,29 @@ function Meta({ infoBar, hostRoom, joinRoom, inputRoomId, setInputRoomId }) {
   }, []);
 
 
-    const handleChange = (event) => {
-        setInputRoomId(event.target.value);
-    };
+  const handleChange = (event) => {
+    const { value } = event.target;
+    setInputRoomId(value);
+  };
 
   return (
     <>
     <div>This is meta screen</div>
-    {profileData.nickname && (
+    {profileData.nickname ? (
+      <>
         <div>
           Nickname: {profileData.nickname}<br/>
           Avatar: {profileData.avatar}
         </div>
-      )}
-    <div>{infoBar}</div>
-    {!profileData.nickname && <p>No profile data found. Please set up your profile.</p>}
+        <div>{infoBar}</div>
+      </>
+      ) : (
+        <>
+          <p>No profile data found. Please set up your profile.</p>
+          <div>{infoBar}</div>
+        </>
+    )}
+
     <input type="text" value={inputRoomId} onChange={handleChange} placeholder="Enter Room ID"/>
     <button onClick={joinRoom}>Join room</button>
     <div>

@@ -37,7 +37,6 @@ const Result = ({ gameState, socket, infoBar, setInfoBar }) => {
   // Create an array from results and sort it by votes
   const sortedResults = Object.entries(results).sort((a, b) => b[1] - a[1]);
 
-
   return (
     <div>
       <div>

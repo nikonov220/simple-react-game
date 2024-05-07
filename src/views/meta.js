@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import checkConnectionAndProfile from "../App.js";
 import ProfileDisplay from "../components/profileDisplay.js";
 import Profile from "./profile.js";
 
@@ -8,12 +7,7 @@ function Meta({ socket, profileData, setProfileData, infoBar, setInfoBar }) {
   const [showProfile, setShowProfile] = useState(false)
 
   useEffect(() => {
-    if (profileData.nickname == "") {
-      setShowProfile(true)
-    }
-    else{
-      setShowProfile(false)
-    }
+    setShowProfile(!profileData.nickname);
   }, [profileData]);
 
 
@@ -55,37 +49,35 @@ function Meta({ socket, profileData, setProfileData, infoBar, setInfoBar }) {
   };
 
   const handleChange = (event) => {
-    setInputRoomId(event.target.value);
+    const { value } = event.target;
+    setInputRoomId(value);
   };
 
   const joinRoom = () => {
-    if (!checkConnectionAndProfile()) {
+    const isConnected = checkConnectionAndProfile();
+    if (!isConnected) {
       return;
     }
     console.log("request to join");
     socket.emit("joinRoom", inputRoomId);
   };
   const hostRoom = () => {
-    if (!checkConnectionAndProfile()) {
+    const isConnected = checkConnectionAndProfile();
+    if (!isConnected) {
       return;
     }
     console.log("request to host");
     socket.emit("hostRoom", inputRoomId);
   };
 
-  const handleShowProfile = () => {
-    if (showProfile){
-      setShowProfile(false)
-    }
-    else{
-      setShowProfile(true)
-    }
+  const toggleShowProfile = () => {
+    setShowProfile(!showProfile);
   };
 
   return (
     <>
       <h1>Псайк на минималках</h1>
-      <button onClick={handleShowProfile}>
+      <button onClick={toggleShowProfile}>
         {!showProfile ? "Открыть профиль" : "Закрыть профиль"}
       </button>
       {!showProfile ? (

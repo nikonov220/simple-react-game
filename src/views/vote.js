@@ -5,12 +5,13 @@ const Vote = ({ gameState, socket, infoBar, setInfoBar }) => {
   const [everyoneVoted, setEveryoneVoted] = useState(false);
   const answers = gameState.roomInfo.questions[gameState.roomInfo.round].answers;
   const profileData = JSON.parse(localStorage.getItem('profileData'));
+  // const userId = profileData?.id (но тогда будет не null, a undefined)
   const userId = profileData ? profileData.id : null;
 
   const MemberStatus = ({ gameState }) => {
     const members = gameState.roomInfo.members;
     const currentAnswers = gameState.roomInfo.questions[gameState.roomInfo.round].answers;
-  
+
     // Function to check voting status of each member
     const checkVotingStatus = (memberId) => {
       let voteCount = 0;
@@ -19,7 +20,7 @@ const Vote = ({ gameState, socket, infoBar, setInfoBar }) => {
           voteCount += 1;
         }
       });
-  
+
       if (voteCount === 0) {
         return '❌';  // Red cross emoji for not voted
       } else if (voteCount === 1) {
@@ -28,7 +29,7 @@ const Vote = ({ gameState, socket, infoBar, setInfoBar }) => {
         return '⚠️';  // Error emoji for multiple votes found
       }
     };
-  
+
     return (
       <div><br/>
         <ul>
@@ -67,7 +68,7 @@ const Vote = ({ gameState, socket, infoBar, setInfoBar }) => {
     // Check if the number of unique voters matches the number of members
     setEveryoneVoted(Object.keys(members).length === voters.size);
 
-  }, [gameState]); 
+  }, [gameState]);
 
   const handleVote = (answerId) => {
     if(Object.values(answers).some(answer => answer.votes.includes(userId))){
@@ -80,9 +81,9 @@ const Vote = ({ gameState, socket, infoBar, setInfoBar }) => {
       return; // Prevents voting again if a vote has already been cast
     }
     setMyVoteFor(answerId);  // Set the vote to the selected answer's ID
-    console.log("Voted for answer ID:", {gameState:gameState, vote:answerId});  // Log or handle the vote as needed
-    socket.emit('submitAnswer', {gameState: gameState, vote: answerId})
-    
+    console.log("Voted for answer ID:", { gameState: gameState, vote: answerId });  // Log or handle the vote as needed
+    socket.emit('submitAnswer', { gameState: gameState, vote: answerId })
+
   };
 
   return (
@@ -93,9 +94,11 @@ const Vote = ({ gameState, socket, infoBar, setInfoBar }) => {
       <ul>
         {Object.entries(answers).map(([answerId, { answer, votes }]) => (
           <li key={answerId} onClick={() => handleVote(answerId)} style={{ cursor: 'pointer' }}>
-            {answer} {myVoteFor ? 'Votes: ' + votes.length :''}{myVoteFor === answerId ? ' (Your vote)' : ''}<br/>
+            {answer} {myVoteFor ? 'Votes: ' + votes.length :''}{myVoteFor === answerId ? ' (Your vote)' : ''}
+            <br/>
             {everyoneVoted ? <> By {gameState.roomInfo.members[answerId].avatar}{gameState.roomInfo.members[answerId].nickname}</> : ''}
-          <br/><br/></li>
+            <br/><br/>
+          </li>
         ))}
       </ul>
       {<MemberStatus gameState={gameState}/>}

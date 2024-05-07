@@ -7,7 +7,6 @@ import Question from "./views/question.js";
 import Vote from "./views/vote.js";
 import Result from "./views/result.js";
 import Room from "./views/room.js";
-import userEvent from "@testing-library/user-event";
 
 const SERVER_ADDRESS = "http://localhost:3001";
 
@@ -15,9 +14,9 @@ function App() {
   const DynamicView = () => {
     const [socket, setSocket] = useState(null);
 
-    const [connectionState, setConnectionState] = useState(0);
-    const [connectionStatus, setConnectionStatus] = useState("Disconnected");
-    const [serverResponse, setServerResponse] = useState("");
+    // const [connectionState, setConnectionState] = useState(0);
+    // const [connectionStatus, setConnectionStatus] = useState("Disconnected");
+    // const [serverResponse, setServerResponse] = useState("");
 
     const [viewState, setViewState] = useState("meta");
     const [infoBar, setInfoBar] = useState("Информация");
@@ -145,7 +144,7 @@ function App() {
       const newSocket = io(SERVER_ADDRESS);
 
       newSocket.on("connect", () => {
-        setConnectionStatus("Connected");
+        // setConnectionStatus("Connected");
         console.log("Connected to the server");
 
         // Retrieve profile data from local storage
@@ -160,13 +159,13 @@ function App() {
       });
 
       newSocket.on("disconnect", () => {
-        setConnectionStatus("Disconnected");
+        // setConnectionStatus("Disconnected");
         console.log("Disconnected from the server");
       });
 
-      newSocket.on("fromServer", (message) => {
-        setServerResponse(message);
-      });
+      // newSocket.on("fromServer", (message) => {
+      //   setServerResponse(message);
+      // });
 
       newSocket.on("setViewStateAnswer", (message) => {
         setViewState(message);
@@ -174,7 +173,7 @@ function App() {
 
       newSocket.on("handshakeSuccess", (uid) => {
         console.log(`Handshake success ${uid}`);
-        setConnectionState(1);
+        // setConnectionState(1);
 
         // Fix later -- every reconnection me
         setViewState("meta");
@@ -208,7 +207,7 @@ function App() {
 
       newSocket.on("roomInfoUpdate", (data) => {
         console.log("recieved roomInfo update");
-        if (data == 0) {
+        if (data === 0) {
           setViewState("meta");
         }
         setGameState((prevState) => ({
