@@ -7,7 +7,6 @@ import Question from "./views/question.js";
 import Vote from "./views/vote.js";
 import Result from "./views/result.js";
 import Room from "./views/room.js";
-
 const SERVER_ADDRESS = "http://localhost:3001";
 
 function App() {
@@ -24,7 +23,7 @@ function App() {
       }
       return { avatar: "", nickname: "" };
     });
-
+      
     const [gameState, setGameState] = useState({
       viewState: "meta",
       roomInfo: null,
