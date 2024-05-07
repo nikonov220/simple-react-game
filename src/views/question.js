@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const Question = ({ gameState, socket, infoBar, setInfoBar }) => {
   const [profile, setProfile] = useState(null);
-  const [answer, setAnswer] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false); 
-  
+  const [answer, setAnswer] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   const MemberList = ({ gameState }) => {
     const members = gameState.roomInfo.members;
-    const answers = gameState.roomInfo.questions[gameState.roomInfo.round].answers;
-  
+    const answers =
+      gameState.roomInfo.questions[gameState.roomInfo.round].answers;
+
     return (
       <div>
         <h2>Room Members</h2>
@@ -19,7 +20,7 @@ const Question = ({ gameState, socket, infoBar, setInfoBar }) => {
             return (
               <li key={memberId}>
                 {avatar} {nickname}
-                {hasAnswered ? ' ✅' : ' ❌'}
+                {hasAnswered ? " ✅" : " ❌"}
               </li>
             );
           })}
@@ -27,35 +28,40 @@ const Question = ({ gameState, socket, infoBar, setInfoBar }) => {
       </div>
     );
   };
-  
+
   useEffect(() => {
     // Retrieve profile data from local storage
-    const savedProfileData = localStorage.getItem('profileData');
+    const savedProfileData = localStorage.getItem("profileData");
     if (savedProfileData) {
-        setProfile(JSON.parse(savedProfileData));
+      setProfile(JSON.parse(savedProfileData));
     }
   }, []);
 
   useEffect(() => {
-    if(profile && profile.id in Object.keys(gameState.roomInfo.questions[gameState.roomInfo.round].answers)){
-      setIsSubmitted(true)
+    if (
+      profile &&
+      profile.id in
+        Object.keys(
+          gameState.roomInfo.questions[gameState.roomInfo.round].answers
+        )
+    ) {
+      setIsSubmitted(true);
     }
-  }, [gameState]); 
+  }, [gameState]);
 
   const handleAnswerChange = (event) => {
     setAnswer(event.target.value);
   };
 
   const handleSendAnswer = () => {
-    if(socket){
+    if (socket) {
       console.log("Answer sent to the server:", answer);
       setIsSubmitted(true);
-      socket.emit('submitQuestion', {gameState:gameState, answer:answer})
-    }else{
-      setInfoBar('No connection!')
+      socket.emit("submitQuestion", { gameState: gameState, answer: answer });
+    } else {
+      setInfoBar("No connection!");
     }
   };
-
 
   return (
     <div>
@@ -67,12 +73,20 @@ const Question = ({ gameState, socket, infoBar, setInfoBar }) => {
         onChange={handleAnswerChange}
         placeholder="Type your answer here..."
         hidden={isSubmitted}
-      /><br/>
-      <button onClick={handleSendAnswer} disabled={isSubmitted}>Send Answer</button>
-      {isSubmitted ? <>
-      Your answer: {answer}<br/>
-      <MemberList gameState={gameState}/> <br/>
-      </> : 'Answer now!'}
+      />
+      <br />
+      <button onClick={handleSendAnswer} disabled={isSubmitted}>
+        Send Answer
+      </button>
+      {isSubmitted ? (
+        <>
+          Your answer: {answer}
+          <br />
+          <MemberList gameState={gameState} /> <br />
+        </>
+      ) : (
+        "Answer now!"
+      )}
     </div>
   );
 };
