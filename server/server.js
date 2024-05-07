@@ -205,6 +205,7 @@ io.on('connection', (socket) => {
         if (userid in rooms[id].members)
         {
             console.log('Already in that room')
+            io.to(id).emit('gameStateUpdate', room);
             return;
         }
         users[userid].roomID = id
@@ -341,8 +342,8 @@ setInterval(() => {
                         let question = generateQuestionForRoom(room.id)
                         room.questions[room.round] = {question:question, answers:{}}
                     }
-                    io.to(roomId).emit('gameStateUpdate', room);
                 }
+                io.to(roomId).emit('gameStateUpdate', room);
             }
             else if (room.state === 'result' && Object.keys(room.members).length > 0) {
                 io.to(roomId).emit('gameStateUpdate', room);

@@ -8,31 +8,32 @@ const Profile = ({ setProfileData, socket }) => {
   // Function to generate a random emoji
   const generateEmoji = () => {
     const emojiList = [
-      "😀",
-      "😃",
-      "😄",
-      "😁",
-      "😆",
-      "😅",
-      "😂",
-      "🤣",
-      "😊",
-      "😇",
-      "🙂",
-      "🙃",
-      "😉",
-      "😌",
-      "😍",
-      "🥰",
-      "😘",
-      "😗",
-      "😙",
-      "😚",
-      "😋",
-      "😛",
-      "😝",
-      "😜",
+      "👿",
+      "👹",
+      "🤡",
+      "💩",
+      "👻",
+      "💀",
+      "👽",
+      "👾",
+      "🤖",
+      "🧟‍♀️",
+      "🐵",
+      "🐔",
+      "🍆",
+      "🍑",
+      "🏄‍♂️",
+      "🎰",
+      "🎮",
+      "🎲",
+      "🎬",
+      "🖼️",
+      "🔞",
+      "❤️",
+      "🧪",
       "🤪",
+      "🤣",
+      "😂",
     ];
     return emojiList[Math.floor(Math.random() * emojiList.length)];
   };
@@ -80,7 +81,7 @@ const Profile = ({ setProfileData, socket }) => {
   return (
     <div>
       <b>Настройки профиля</b>
-        <ProfileDisplay avatar={avatar} nickname={nickname}/>
+      <ProfileDisplay avatar={avatar} nickname={nickname} />
       <div>
         <button onClick={regenerateAvatar}>Выбрать другой аватар</button>
       </div>
