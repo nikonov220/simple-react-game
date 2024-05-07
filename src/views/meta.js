@@ -5,17 +5,15 @@ import Profile from "./profile.js";
 
 function Meta({ socket, profileData, setProfileData, infoBar, setInfoBar }) {
   const [inputRoomId, setInputRoomId] = useState("001");
-  const [showProfile, setShowProfile] = useState(false)
+  const [showProfile, setShowProfile] = useState(false);
 
   useEffect(() => {
     if (profileData.nickname == "") {
-      setShowProfile(true)
-    }
-    else{
-      setShowProfile(false)
+      setShowProfile(true);
+    } else {
+      setShowProfile(false);
     }
   }, [profileData]);
-
 
   useEffect(() => {
     const handleRoomDoesNotExist = () => {
@@ -74,39 +72,60 @@ function Meta({ socket, profileData, setProfileData, infoBar, setInfoBar }) {
   };
 
   const handleShowProfile = () => {
-    if (showProfile){
-      setShowProfile(false)
-    }
-    else{
-      setShowProfile(true)
+    if (showProfile) {
+      setShowProfile(false);
+    } else {
+      setShowProfile(true);
     }
   };
 
   return (
     <>
-      <h1>Псайк на минималках</h1>
-      <button onClick={handleShowProfile}>
-        {!showProfile ? "Открыть профиль" : "Закрыть профиль"}
-      </button>
-      {!showProfile ? (
-        <ProfileDisplay
-          nickname={profileData.nickname}
-          avatar={profileData.avatar}
-        />
-      ) : (
-        <Profile setProfileData={setProfileData} socket={socket} />
-      )}
-      <hr />
-      <div>Уведомление: {infoBar}</div>
-      <div>Создайте комнату или зайдите к друзьям</div>
-      <input
-        type="text"
-        value={inputRoomId}
-        onChange={handleChange}
-        placeholder="Enter Room ID"
-      />
-      <button onClick={joinRoom}>Войти в комнату</button>
-      <button onClick={hostRoom}>Создать комнату</button>
+      <div className="header">
+        <div className="header-text">Психопатор</div>
+      </div>
+      <div className="content-container window">
+        <div className="title-bar">
+          <div className="title-bar-text">Найдите игру</div>
+          <div className="title-bar-controls">
+            <button aria-label="Minimize" />
+            <button aria-label="Maximize" />
+            <button aria-label="Close" />
+          </div>
+        </div>
+        <div className="window-body">
+          <div className="flex-buttons">
+            <button onClick={handleShowProfile}>Профиль</button>
+            <ProfileDisplay
+              nickname={profileData.nickname}
+              avatar={profileData.avatar}
+            />
+          </div>
+
+          {showProfile ? (
+            <Profile
+              setProfileData={setProfileData}
+              socket={socket}
+              handleShowProfile={handleShowProfile}
+            />
+          ) : (
+            ""
+          )}
+          <hr />
+          <div>Уведомление: {infoBar}</div>
+          <div>Создайте комнату или зайдите к друзьям!</div>
+          <div className="flex-buttons">
+          <input
+            type="text"
+            value={inputRoomId}
+            onChange={handleChange}
+            placeholder="Enter Room ID"
+          />
+          <button onClick={joinRoom}>Войти в комнату</button>
+          <button onClick={hostRoom}>Создать комнату</button>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

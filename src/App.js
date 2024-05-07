@@ -7,7 +7,12 @@ import Question from "./views/question.js";
 import Vote from "./views/vote.js";
 import Result from "./views/result.js";
 import Room from "./views/room.js";
-const SERVER_ADDRESS = "http://localhost:3001";
+import startLogo from './assets/startlogo.png'
+
+import "98.css";
+
+import "./App.css";
+const SERVER_ADDRESS = "http://192.168.1.72:3001";
 
 function App() {
   const DynamicView = () => {
@@ -23,7 +28,7 @@ function App() {
       }
       return { avatar: "", nickname: "" };
     });
-      
+
     const [gameState, setGameState] = useState({
       viewState: "meta",
       roomInfo: null,
@@ -53,14 +58,6 @@ function App() {
         connectToServer();
       }
     }, []);
-
-    const sendMessage = () => {
-      if (socket) {
-        socket.emit("fromClient", "message");
-      } else {
-        console.log("Tried to send with no connection");
-      }
-    };
 
     const renderView = () => {
       switch (viewState) {
@@ -124,7 +121,7 @@ function App() {
     };
 
     const connectToServer = () => {
-      console.log("Connection to server run")
+      console.log("Connection to server run");
       if (socket) {
         if (gameState.debug) {
           console.log("Connection to server run, but socket exists", gameState);
@@ -159,7 +156,7 @@ function App() {
 
       newSocket.on("fromServer", (message) => {
         setServerResponse(message);
-        setInfoBar(serverResponse)
+        setInfoBar(serverResponse);
       });
 
       newSocket.on("setViewStateAnswer", (message) => {
@@ -228,15 +225,14 @@ function App() {
       setSocket(newSocket);
     };
 
-    return (
-      renderView()
-    );
+    return renderView();
   };
 
   return (
-    <>
+    <div className="dynamicViewWrapper">
       <DynamicView />
-    </>
+      <div className="footer window"><button><img src={startLogo} alt="logo" className="start-logo"/><div>Пуск</div></button></div>
+    </div>
   );
 }
 export default App;

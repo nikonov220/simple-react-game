@@ -194,6 +194,10 @@ io.on('connection', (socket) => {
         messageCount++;
         let userid = findUserIdBySocketId(socket.id)
         console.log("=== room join event ===");
+        if(!users[userid]){
+            console.log("User id not in database, no connection handshake has been made!")
+            return;
+        }
         console.log(`Request to join room ${id} by ${users[userid].nickname}`)
         if (rooms[id] == undefined)
         {

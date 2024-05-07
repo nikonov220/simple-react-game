@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ProfileDisplay from "../components/profileDisplay";
 
-const Profile = ({ setProfileData, socket }) => {
+const Profile = ({ setProfileData, socket, handleShowProfile }) => {
   const [avatar, setAvatar] = useState("");
   const [nickname, setNickname] = useState("");
 
@@ -79,19 +79,26 @@ const Profile = ({ setProfileData, socket }) => {
   };
 
   return (
-    <div>
-      <b>Настройки профиля</b>
-      <ProfileDisplay avatar={avatar} nickname={nickname} />
-      <div>
-        <button onClick={regenerateAvatar}>Выбрать другой аватар</button>
+    <div className="profile-container window">
+      <div className="title-bar">
+        <div className="title-bar-text">Наcтройки профиля</div>
+        <div className="title-bar-controls">
+          <button aria-label="Close" onClick={handleShowProfile}/>
+        </div>
       </div>
-      <input
-        type="text"
-        value={nickname}
-        onChange={handleNicknameChange}
-        placeholder="Введите ник"
-      />
-      <button onClick={saveProfile}>Сохранить профиль</button>
+      <div className="window-body">
+        <ProfileDisplay avatar={avatar} nickname={nickname} />
+        <input
+          type="text"
+          value={nickname}
+          onChange={handleNicknameChange}
+          placeholder="Введите ник"
+        />
+        <div className="flex-buttons">
+        <button onClick={regenerateAvatar}>Сменить аватар</button>
+        <button onClick={saveProfile}>Сохранить</button>
+        </div>
+      </div>
     </div>
   );
 };
