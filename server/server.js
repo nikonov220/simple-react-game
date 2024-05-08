@@ -212,7 +212,7 @@ io.on('connection', (socket) => {
         if (userid in rooms[id].members)
         {
             console.log('Already in that room')
-            io.to(id).emit('gameStateUpdate', room);
+            io.to(id).emit('gameStateUpdate', rooms[id]);
             return;
         }
         users[userid].roomID = id
@@ -236,12 +236,12 @@ io.on('connection', (socket) => {
         console.log('=== room leave event ===')
         if (roomid != 0) {
             if (userid in rooms[roomid].members){
+                users[userid].roomID = 0
                 delete rooms[roomid].members[userid]
                 socket.leave(roomid)
                 socket.emit('roomInfoUpdate', 0)
                 console.log(findUserProfileBySocketId(socket.id).nickname + " left room " + roomid)
                 if (Object.keys(rooms[roomid].members).length === 0) {
-                    // Use the delete operator to remove the room if no members are left
                     delete rooms[roomid];
                     console.log(`Room ${roomid} was empty and has been deleted.`);
                 }
@@ -288,7 +288,7 @@ io.on('connection', (socket) => {
         }
         
         rooms[roomid].questions[round.toString()].answers[userid] = {answer:data.answer, id:userid, votes:[]}
-        io.emit('gameStateUpdate', rooms[roomid])
+        io.to(roomid).emit('gameStateUpdate', rooms[roomid])
     })
     socket.on('submitAnswer', data =>
     {
@@ -307,7 +307,7 @@ io.on('connection', (socket) => {
         else{
             console.log('No votes object')
         }
-        io.emit('gameStateUpdate', rooms[roomid])
+        io.to(roomid).emit('gameStateUpdate', rooms[roomid])
     })
 });
 

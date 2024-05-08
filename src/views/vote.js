@@ -7,6 +7,8 @@ const Vote = ({ gameState, socket, infoBar, setInfoBar }) => {
     gameState.roomInfo.questions[gameState.roomInfo.round].answers;
   const profileData = JSON.parse(localStorage.getItem("profileData"));
   const userId = profileData ? profileData.id : null;
+  const [selectedAnswerId, setSelectedAnswerId] = useState(null);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const MemberStatus = ({ gameState }) => {
     const members = gameState.roomInfo.members;
@@ -56,7 +58,9 @@ const Vote = ({ gameState, socket, infoBar, setInfoBar }) => {
     )?.[0];
 
     if (previouslyVotedAnswerId) {
+      setSelectedAnswerId(previouslyVotedAnswerId)
       setMyVoteFor(previouslyVotedAnswerId);
+      setButtonDisabled(true)
     }
 
     // check if everyone has voted and set everyoneVoted
@@ -90,39 +94,63 @@ const Vote = ({ gameState, socket, infoBar, setInfoBar }) => {
       vote: answerId,
     }); // Log or handle the vote as needed
     socket.emit("submitAnswer", { gameState: gameState, vote: answerId });
+    setButtonDisabled(true)
+  };
+
+  const handleButtonClick = () => {
+    if (!selectedAnswerId) {
+      console.log("Select a vote")
+      return;
+    }
+    handleVote(selectedAnswerId);
+  };
+
+  const handleRadioChange = (event) => {
+    setSelectedAnswerId(event.target.value);
   };
 
   return (
-    <div>
-      <h2>Vote on Answers</h2>
-      {infoBar}
-      <br />
-      {gameState.roomInfo.questions[gameState.roomInfo.round].question}
-      <ul>
-        {Object.entries(answers).map(([answerId, { answer, votes }]) => (
-          <li
-            key={answerId}
-            onClick={() => handleVote(answerId)}
-            style={{ cursor: "pointer" }}
-          >
-            {answer} {myVoteFor ? "Votes: " + votes.length : ""}
-            {myVoteFor === answerId ? " (Your vote)" : ""}
-            <br />
-            {everyoneVoted ? (
-              <>
-                {" "}
-                By {gameState.roomInfo.members[answerId].avatar}
-                {gameState.roomInfo.members[answerId].nickname}
-              </>
-            ) : (
-              ""
-            )}
-            <br />
-            <br />
-          </li>
-        ))}
-      </ul>
-      {<MemberStatus gameState={gameState} />}
+    <div className="window question-container">
+      <div className="title-bar">
+        <div className="title-bar-text">
+          Комната: {gameState.roomInfo.id} Голосование:{" "}
+          {gameState.roomInfo.round}
+        </div>
+        <div className="title-bar-controls">
+          <button
+            aria-label="Close"
+            onClick={() => {
+              if (socket) {
+                socket.emit("leaveRoom");
+              }
+            }}
+          />
+        </div>
+      </div>
+      <div className="window-body">
+        {gameState.roomInfo.questions[gameState.roomInfo.round].question}
+        <fieldset>
+          <legend>Варианты ответа</legend>
+          {Object.entries(answers).map(([answerId, { answer, votes }]) => (
+            
+            <div className="fieldRow" key={answerId}>
+            <input 
+              type="radio" 
+              id={`radio-${answerId}`} 
+              name="voting-options" 
+              checked={selectedAnswerId == answerId}
+              disabled={myVoteFor}
+              value={answerId} 
+              onChange={handleRadioChange} 
+            />
+            <label htmlFor={`radio-${answerId}`}>{answer}: {votes.length}</label>
+          </div>
+            
+          ))}
+        </fieldset>
+        <button onClick={handleButtonClick} disabled={buttonDisabled}>Отправить</button>
+        {<MemberStatus gameState={gameState} />}
+      </div>
     </div>
   );
 };

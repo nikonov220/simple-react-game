@@ -211,7 +211,7 @@ function App() {
 
       newSocket.on("setInfoBar", (data) => {
         setInfoBar(data);
-        console.log(infoBar);
+        console.log(data);
       });
 
       newSocket.on("gameStateUpdate", (data) => {
@@ -231,6 +231,9 @@ function App() {
 
   return (
     <div className="dynamicViewWrapper">
+      <div className="header">
+        <div className="header-text">Психопатор</div>
+      </div>
       <DynamicView />
       <div className="footer window">
         <div>
@@ -239,7 +242,7 @@ function App() {
           <div>Пуск</div>
         </button>
         </div>
-        <div class="status-bar-field time-div"><Clock/></div>
+        <div className="status-bar-field time-div"><Clock/></div>
       </div>
     </div>
   );

@@ -81,11 +81,8 @@ function Meta({ socket, profileData, setProfileData, infoBar, setInfoBar }) {
 
   return (
     <>
-      <div className="header">
-        <div className="header-text">Психопатор</div>
-      </div>
       <div className="content-container window">
-        <div className="title-bar">
+        <div className={"title-bar " + (showProfile ? 'inactive' : '')}>
           <div className="title-bar-text">Найдите игру</div>
           <div className="title-bar-controls">
             <button aria-label="Minimize" />

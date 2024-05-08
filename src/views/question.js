@@ -12,15 +12,14 @@ const Question = ({ gameState, socket, infoBar, setInfoBar }) => {
 
     return (
       <div>
-        <h2>Room Members</h2>
-        <ul>
+        <ul className="tree-view">
           {Object.entries(members).map(([memberId, { nickname, avatar }]) => {
             // Check if the memberId is in the answers object
             const hasAnswered = answers.hasOwnProperty(memberId);
             return (
               <li key={memberId}>
                 {avatar} {nickname}
-                {hasAnswered ? " ✅" : " ❌"}
+                {hasAnswered ? " ✓" : " ✘"}
               </li>
             );
           })}
@@ -38,12 +37,10 @@ const Question = ({ gameState, socket, infoBar, setInfoBar }) => {
   }, []);
 
   useEffect(() => {
-    if (
-      profile &&
-      profile.id in
+    if (profile &&
         Object.keys(
           gameState.roomInfo.questions[gameState.roomInfo.round].answers
-        )
+        ).includes(profile['id'])
     ) {
       setIsSubmitted(true);
     }
@@ -64,19 +61,31 @@ const Question = ({ gameState, socket, infoBar, setInfoBar }) => {
   };
 
   return (
-    <div>
-      <h1>Question</h1>
+    <div className="window question-container">
+      <div className="title-bar">
+          <div className="title-bar-text">Комната {gameState.roomInfo.id}: Вопрос {gameState.roomInfo.round}</div>
+          <div className="title-bar-controls">
+            <button
+              aria-label="Close"
+              onClick={() => {
+                if (socket) {
+                  socket.emit("leaveRoom");
+                }
+              }}
+            />
+          </div>
+        </div>
+        Вопрос {gameState.roomInfo.round}:
       <p>{gameState.roomInfo.questions[gameState.roomInfo.round].question}</p>
       <textarea
         value={answer}
         disabled={isSubmitted}
         onChange={handleAnswerChange}
-        placeholder="Type your answer here..."
-        hidden={isSubmitted}
+        placeholder="Что-нибудь смешное..."
       />
       <br />
       <button onClick={handleSendAnswer} disabled={isSubmitted}>
-        Send Answer
+        Ответить
       </button>
       {isSubmitted ? (
         <>
