@@ -7,7 +7,8 @@ import Question from "./views/question.js";
 import Vote from "./views/vote.js";
 import Result from "./views/result.js";
 import Room from "./views/room.js";
-import startLogo from './assets/startlogo.png'
+import startLogo from "./assets/startlogo.png";
+import Clock from "./components/clock.js";
 
 import "98.css";
 
@@ -231,7 +232,15 @@ function App() {
   return (
     <div className="dynamicViewWrapper">
       <DynamicView />
-      <div className="footer window"><button><img src={startLogo} alt="logo" className="start-logo"/><div>Пуск</div></button></div>
+      <div className="footer window">
+        <div>
+        <button>
+          <img src={startLogo} alt="logo" className="start-logo" />
+          <div>Пуск</div>
+        </button>
+        </div>
+        <div class="status-bar-field time-div"><Clock/></div>
+      </div>
     </div>
   );
 }

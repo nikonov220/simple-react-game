@@ -176,6 +176,10 @@ io.on('connection', (socket) => {
         messageCount++;
         let userid = findUserIdBySocketId(socket.id)
         console.log("=== room host event ===");
+        if(!users[userid]){
+            console.log("User id not in database, no connection handshake has been made!")
+            return;
+        }
         console.log(`Request to host room ${JSON.stringify(id)} from ${users[userid].nickname}`);
         if (rooms[id] && rooms[id].state != 'ended')
         {
