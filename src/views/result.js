@@ -41,8 +41,7 @@ const Result = ({ gameState, socket, infoBar, setInfoBar }) => {
     <div className="window result-container">
       <div className="title-bar">
         <div className="title-bar-text">
-          Комната: {gameState.roomInfo.id} Голосование:{" "}
-          {gameState.roomInfo.round}
+          Комната: {gameState.roomInfo.id} Результаты
         </div>
         <div className="title-bar-controls">
           <button
@@ -57,36 +56,20 @@ const Result = ({ gameState, socket, infoBar, setInfoBar }) => {
       </div>
       <div className="window-body">
         Результаты
-        <ul>
-          {sortedResults.map(([userId, totalVotes]) => (
-            <li key={userId}>
-              {
-                <>
-                  {gameState.roomInfo.members[userId].avatar}
-                  {gameState.roomInfo.members[userId].nickname}
-                </>
-              }{" "}
-              - Total Votes: {totalVotes}
-            </li>
-          ))}
-        </ul>
-        <div className="sunken-panel debugBorder">
-          <table className="interactive">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Version</th>
-                <th>Company</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>MySQL ODBC 3.51 Driver</td>
-                <td>3.51.11.00</td>
-                <td>MySQL AB</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="status-bar">
+          <ul>
+            {sortedResults.map(([userId, totalVotes]) => (
+              <li key={userId}>
+                {
+                  <>
+                    {gameState.roomInfo.members[userId].avatar}
+                    {gameState.roomInfo.members[userId].nickname}
+                  </>
+                }{" "}
+                - голосов: {totalVotes}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>

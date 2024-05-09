@@ -341,6 +341,11 @@ setInterval(() => {
                     if (room.round == room.rounds){
                         room.state = 'result'
                         room.viewState = 'result'
+                        room.finalMembers = Object.keys(room.members).reduce((acc, key) => {
+                            acc[key] = { ...room.members[key] };
+                            return acc;
+                          }, {});
+                        io.to(roomId).emit('gameStateUpdate', room);
                     }
                     else{
                         room.round = room.round+1
@@ -348,12 +353,17 @@ setInterval(() => {
                         room.viewState = 'question'
                         let question = generateQuestionForRoom(room.id)
                         room.questions[room.round] = {question:question, answers:{}}
+                        io.to(roomId).emit('gameStateUpdate', room);
                     }
                 }
-                io.to(roomId).emit('gameStateUpdate', room);
             }
-            else if (room.state === 'result' && Object.keys(room.members).length > 0) {
-                io.to(roomId).emit('gameStateUpdate', room);
+            else if (room.state === 'result' && Object.keys(room.members).length > 0){
+                const roomForEmission = {
+                    ...room,
+                    members: room.finalMembers
+                  };
+                
+                  io.to(roomId).emit('gameStateUpdate', roomForEmission);
             }
             console.log('Processed room ' + room.id + ", status: " + room.state)
         });
