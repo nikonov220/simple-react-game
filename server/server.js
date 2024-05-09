@@ -2,10 +2,11 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const { v4: uuidv4 } = require('uuid');
+const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
-
+const debug = true
 let messageCount = 0;
 let connectedSockets = new Set();  // Store for active socket IDs
 
@@ -15,7 +16,23 @@ let rooms = {}
 const Questions = ['Если бы RandomPersonFromRoom собрался на необитаемый остров, что бы он взял с собой?', 
 'Как бы RandomPersonFromRoom назвал собаку?', 
 "Какое преступление на уме у RandomPersonFromRoom?", "Какие скелеты у RandomPersonFromRoom в шкафу?",
-"Кто главный враг RandomPersonFromRoom ?"]
+"Кто главный враг RandomPersonFromRoom ?",
+"Если бы RandomPersonFromRoom летел в космос, какие 3 вещи он с собой бы взял?",
+"Если бы RandomPersonFromRoom был моряком, как назывался бы корабль?",
+"Если бы RandomPersonFromRoom сыграл в фильме, как он бы назывался?",
+"Если бы RandomPersonFromRoom отправлял послание инопланетянам, там было бы написано «…?",
+"Если бы RandomPersonFromRoom был писателем, его книга начиналась бы со слов «…?",
+"Если бы RandomPersonFromRoom был актером цирка, то каким?",
+"Если бы RandomPersonFromRoom был ученым, его открытием было бы … ?",
+"Если бы RandomPersonFromRoom был генным инженером, он бы вывел новый вид живого организма «..»?",
+"Если бы RandomPersonFromRoom стал музыкантом, как бы назывался его дебютный альбом?",
+"Если бы RandomPersonFromRoom био-гено инженером, какие два вида животных он бы скрестил?",
+"Если бы RandomPersonFromRoom был супергероем, какой супер-силой он бы обладал?",
+"Если бы RandomPersonFromRoom посадили в тюрьму, то по какой статье?",
+"Если бы RandomPersonFromRoom посадили в тюрьму, кто был бы его сокамерник?",
+"Если бы RandomPersonFromRoom доверили придумать олимпийский символ, то что бы это было?",
+"Если бы RandomPersonFromRoom был футболистом, какое имя было бы написано на футболке?", 
+"Если бы RandomPersonFromRoom разработал криптовалюту, чем бы она обеспечивалась?"]
 
 const PORT = 3001; // Change as per your server's port
 
@@ -371,6 +388,14 @@ setInterval(() => {
         console.log("No rooms to process.");
     }
 }, 5000);
+
+if (!debug)
+{
+    app.use(express.static(path.join(__dirname, '..', 'build')));
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, '..', 'build', 'index.html'));
+    });
+}
 
 
 server.listen(PORT, () => {
