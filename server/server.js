@@ -13,7 +13,7 @@ let users = {}
 let rooms = {}
 let PORT = 3000; // Change as per your server's port
 
-if(process.env.MY_VAR == 1){
+if(process.env.AMVERA == 1){
     debug = false
 }
 console.log("Debug: "+debug)
