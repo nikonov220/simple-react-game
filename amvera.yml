@@ -8,4 +8,4 @@ build:
   additionalCommands: npm run build
 run:
   scriptName: server/server.js
-  containerPort: 3000
+  containerPort: 3001
