@@ -51,6 +51,7 @@ const Result = ({ gameState, socket, infoBar, setInfoBar }) => {
     <div className="window result-container">
       <div className="title-bar">
         <div className="title-bar-text">
+          
           Комната: {gameState.roomInfo.id} Результаты
         </div>
         <div className="title-bar-controls">

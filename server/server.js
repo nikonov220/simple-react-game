@@ -20,6 +20,7 @@ console.log("Debug: "+debug)
 if(debug){
     PORT = 3001
 }
+console.log("Debug: " + debug)
 
 const Questions = ['Если бы RandomPersonFromRoom собрался на необитаемый остров, что бы он взял с собой?', 
 'Как бы RandomPersonFromRoom назвал собаку?', 
