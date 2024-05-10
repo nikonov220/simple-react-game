@@ -6,12 +6,20 @@ const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
-const debug = false
+const debug = true
 let messageCount = 0;
 let connectedSockets = new Set();  // Store for active socket IDs
 let users = {}
 let rooms = {}
-const PORT = 3000; // Change as per your server's port
+let PORT = 3000; // Change as per your server's port
+
+if(process.env.MY_VAR == 1){
+    debug = false
+}
+console.log("Debug: "+debug)
+if(debug){
+    PORT = 3001
+}
 
 const Questions = ['Если бы RandomPersonFromRoom собрался на необитаемый остров, что бы он взял с собой?', 
 'Как бы RandomPersonFromRoom назвал собаку?', 
