@@ -11,7 +11,7 @@ let messageCount = 0;
 let connectedSockets = new Set();  // Store for active socket IDs
 let users = {}
 let rooms = {}
-const PORT = 3001; // Change as per your server's port
+const PORT = 3000; // Change as per your server's port
 
 const Questions = ['Если бы RandomPersonFromRoom собрался на необитаемый остров, что бы он взял с собой?', 
 'Как бы RandomPersonFromRoom назвал собаку?', 
