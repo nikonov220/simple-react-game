@@ -9,9 +9,9 @@ const server = http.createServer(app);
 const debug = true
 let messageCount = 0;
 let connectedSockets = new Set();  // Store for active socket IDs
-
 let users = {}
 let rooms = {}
+const PORT = 3001; // Change as per your server's port
 
 const Questions = ['Если бы RandomPersonFromRoom собрался на необитаемый остров, что бы он взял с собой?', 
 'Как бы RandomPersonFromRoom назвал собаку?', 
@@ -34,7 +34,7 @@ const Questions = ['Если бы RandomPersonFromRoom собрался на н�
 "Если бы RandomPersonFromRoom был футболистом, какое имя было бы написано на футболке?", 
 "Если бы RandomPersonFromRoom разработал криптовалюту, чем бы она обеспечивалась?"]
 
-const PORT = 3001; // Change as per your server's port
+
 
 const io = new Server(server, {
   cors: {
