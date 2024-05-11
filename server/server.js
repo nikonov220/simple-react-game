@@ -6,7 +6,7 @@ const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
-const debug = true
+let debug = true
 let messageCount = 0;
 let connectedSockets = new Set();  // Store for active socket IDs
 let users = {}
