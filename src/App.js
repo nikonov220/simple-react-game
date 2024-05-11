@@ -13,7 +13,7 @@ import Clock from "./components/clock.js";
 import "98.css";
 
 import "./App.css";
-let debug = true
+let debug = false
 let SERVER_ADDRESS = "https://psihopator-nikonov220.amvera.io";
 if (debug){
   SERVER_ADDRESS = "http://172.20.10.3:3001"
