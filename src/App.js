@@ -14,7 +14,7 @@ import "98.css";
 
 import "./App.css";
 let debug = false
-let SERVER_ADDRESS = "https://psihopator-nikonov220.amvera.io";
+let SERVER_ADDRESS = "https://194.58.34.37:3000";
 if (debug == true){
   SERVER_ADDRESS = "http://172.20.10.3:3001"
 }
