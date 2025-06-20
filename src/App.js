@@ -14,10 +14,7 @@ import "98.css";
 
 import "./App.css";
 let debug = false
-let SERVER_ADDRESS = "http://194.58.34.37:3000";
-if (debug == true){
-  SERVER_ADDRESS = "http://172.20.10.3:3001"
-}
+let SERVER_ADDRESS = "http://127.0.0.1:3000";
 
 
 
